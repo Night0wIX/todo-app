@@ -1,8 +1,13 @@
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import { SequelizeModuleOptions } from "@nestjs/sequelize";
 import * as path from "path";
 import { envConfig } from "@/app/configs/env.config.js";
 import { Todo } from "@/modules/todo/todo.entity.js";
 import { Category } from "@/modules/category/category.entity.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export function buildDatabaseConfig(): SequelizeModuleOptions {
   const storagePath = envConfig.DB_STORAGE
@@ -13,8 +18,8 @@ export function buildDatabaseConfig(): SequelizeModuleOptions {
     dialect: "sqlite",
     storage: storagePath,
     autoLoadModels: true,
-    synchronize: envConfig.NODE_ENV !== "production",
+    synchronize: true,
     logging: envConfig.DB_LOGGING ? console.log : false,
-    models: [Todo, Category]
+    models: [Todo, Category],
   };
 }
