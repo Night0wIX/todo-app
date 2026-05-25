@@ -6,4 +6,4 @@ const VALIDATION_PIPE_OPTIONS: ValidationPipeOptions = {
   transform: true,
 };
 
-export const ValidationConfig = new ValidationPipe(VALIDATION_PIPE_OPTIONS)
+export const validationConfig = new ValidationPipe(VALIDATION_PIPE_OPTIONS);

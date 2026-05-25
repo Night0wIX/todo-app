@@ -1,24 +1,33 @@
 import {
+  AutoIncrement,
   Column,
-  Table,
-  Model,
+  CreatedAt,
   DataType,
   ForeignKey,
-  CreatedAt,
+  Model,
+  PrimaryKey,
+  Table,
   UpdatedAt,
 } from "sequelize-typescript";
 
 import { Category } from "@/modules/category/category.entity.js";
 
+const TABLE_NAME = "todos";
+const MODEL_NAME = "Todo";
+const MAX_TEXT_LENGTH = 255;
+
 @Table({
-  tableName: "todos",
-  modelName: "Todo",
+  tableName: TABLE_NAME,
+  modelName: MODEL_NAME,
 })
 export class Todo extends Model {
+  @PrimaryKey
+  @AutoIncrement
+  @Column(DataType.INTEGER)
   declare id: number;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.STRING(MAX_TEXT_LENGTH),
     allowNull: false,
   })
   declare text: string;

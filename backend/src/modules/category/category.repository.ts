@@ -1,6 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
+import { Order } from "sequelize";
 import { Category } from "@/modules/category/category.entity.js";
+
+const FIND_ALL_ORDER: Order = [["name", "ASC"]];
 
 @Injectable()
 export class CategoryRepository {
@@ -10,7 +13,7 @@ export class CategoryRepository {
   ) {}
 
   findAll(): Promise<Category[]> {
-    return this.categoryModel.findAll({ order: [["name", "ASC"]] });
+    return this.categoryModel.findAll({ order: FIND_ALL_ORDER });
   }
 
   findById(id: number): Promise<Category | null> {
@@ -21,7 +24,9 @@ export class CategoryRepository {
     return this.categoryModel.count();
   }
 
-  bulkCreate(names: string[]): Promise<Category[]> {
-    return this.categoryModel.bulkCreate(names.map((name) => ({ name: name.trim().toLowerCase() })));
+  bulkCreate(names: readonly string[]): Promise<Category[]> {
+    const records = names.map((name) => ({ name: name.trim().toLowerCase() }));
+
+    return this.categoryModel.bulkCreate(records);
   }
 }

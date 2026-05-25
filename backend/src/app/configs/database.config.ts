@@ -1,25 +1,37 @@
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import path from "node:path";
 import { SequelizeModuleOptions } from "@nestjs/sequelize";
-import * as path from "path";
 import { envConfig } from "@/app/configs/env.config.js";
-import { Todo } from "@/modules/todo/todo.entity.js";
 import { Category } from "@/modules/category/category.entity.js";
+import { Todo } from "@/modules/todo/todo.entity.js";
+import { getEsmDirname } from "@/shared/utils/getEsmDirname.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = getEsmDirname(import.meta.url);
+
+const DB_DEFAULT_STORAGE_PATH = path.resolve(
+  __dirname,
+  "..",
+  "..",
+  "data",
+  "todos.sqlite3",
+);
+
+function resolveStoragePath() {
+  return envConfig.DB_STORAGE
+    ? path.resolve(envConfig.DB_STORAGE)
+    : DB_DEFAULT_STORAGE_PATH;
+}
+
+function sqlLogger(sql: string): void {
+  process.stdout.write(`${sql}\n`);
+}
 
 export function buildDatabaseConfig(): SequelizeModuleOptions {
-  const storagePath = envConfig.DB_STORAGE
-    ? path.resolve(envConfig.DB_STORAGE)
-    : path.resolve(__dirname, "..", "..", "data", "todos.sqlite3");
-
   return {
     dialect: "sqlite",
-    storage: storagePath,
+    storage: resolveStoragePath(),
+    models: [Todo, Category],
     autoLoadModels: true,
     synchronize: true,
-    logging: envConfig.DB_LOGGING ? console.log : false,
-    models: [Todo, Category],
+    logging: envConfig.DB_LOGGING ? sqlLogger : false,
   };
 }
