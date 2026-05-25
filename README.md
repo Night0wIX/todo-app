@@ -6,7 +6,7 @@ Full-stack task management app with categories, undo actions, and bulk operation
 
 ## Prerequisites
 
-Node.js 18+, npm 9+.
+Node.js 18+, pnpm 9+.
 
 ## Running locally
 
@@ -15,20 +15,22 @@ Clone the repo, then in two separate terminals:
 ```bash
 # Backend
 cd backend
-npm install
-npm run start:dev
+pnpm install
+pnpm run start:dev
 ```
 
 ```bash
 # Frontend
 cd frontend
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```
 
 ## Environment variables
 
-Create `backend/.env.development` and `backend/.env.production` based on `backend/.env.example`:
+Create `backend/.env.development` and `backend/.env.production` based on `backend/.env.example`
+
+Create `frontend/.env` based on `frontend/.env.example`
 
 ## Did you use AI?
 
